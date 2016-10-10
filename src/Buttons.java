@@ -1,17 +1,24 @@
 import lejos.nxt.Button;
 import lejos.nxt.ButtonListener;
-import lejos.nxt.LCD;
 
 public class Buttons extends Thread{
-	public int value = 0;
-	public int getValue(){
-		return value;
+	public boolean isPressed = false;
+	public Button button;
+	public Buttons(String button){
+		if(button.equals("ENTER")) this.button = Button.ENTER;
+		if(button.equals("LEFT")) this.button = Button.LEFT;
+		if(button.equals("RIGHT")) this.button = Button.RIGHT;
+		if(button.equals("ESCAPE")) this.button = Button.ESCAPE;
+		
 	}
+	public boolean getState(){
+		return isPressed;
+	}
+
 	public void run(){		
-		Button.ENTER.addButtonListener(new ButtonListener() {
+		this.button.addButtonListener(new ButtonListener() {
 		      public void buttonPressed(Button b) {
-		    	value++;
-		        LCD.drawString("value ="+value, 0, 0);
+		    	isPressed = !isPressed;
 		        
 		      }
 
