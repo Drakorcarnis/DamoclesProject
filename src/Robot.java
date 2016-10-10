@@ -1,4 +1,6 @@
 import lejos.nxt.Button;
+import lejos.nxt.LCD;
+
 import java.util.ArrayList;
 
 public class Robot {
@@ -8,6 +10,7 @@ public class Robot {
 	static Motors MotorARunning= new Motors('A', 80, 40);//Instancie une classe pour gérer le moteur A et une vitesse d'1 tour/min
 	static Motors MotorBRunning= new Motors('B', 80, 40);//Instancie une classe pour gérer le moteur B avec un angle de 75° et une vitesse de 2 tours/min
 	static Scheduler Scheduler;
+	static Distance Distance = new Distance();
 	public static void main(String[] args) throws Exception
 {
 		buttons.add(EnterListening);
