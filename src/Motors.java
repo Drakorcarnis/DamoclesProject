@@ -14,19 +14,19 @@ public class Motors extends Thread {
 		if(motor=='C') this.motor = Motor.C;
 		this.range = range;
 		this.speed = speed;	
-		this.target = this.range;
+		target = range;
 	}
-	public void stopmotor(){ this.motorMustRun = false;}
-	public void startmotor(){ this.motorMustRun = true;}
+	public void stopmotor(){ motorMustRun = false;}
+	public void startmotor(){ motorMustRun = true;}
 	
 	public void run(){
-			this.motor.setSpeed(speed);
+			motor.setSpeed(speed);
 			while(true){
-				if (this.motor.getTachoCount()<this.range & !(this.target == 0)) this.target = this.range;
-				else if (this.motor.getTachoCount()>=this.range) this.target = 0;
-				else if (this.motor.getTachoCount()<=0) this.target = this.range;
-				if(!(this.motor.isMoving()) & this.motorMustRun) this.motor.rotateTo(this.target, true);
-				else if(this.motor.isMoving() & !(this.motorMustRun)) this.motor.stop();
+				if (motor.getTachoCount()<range & !(target == 0)) target = range;
+				else if (motor.getTachoCount()>=range) target = 0;
+				else if (motor.getTachoCount()<=0) target = range;
+				if(!(motor.isMoving()) & motorMustRun) motor.rotateTo(target, true);
+				else if(motor.isMoving() & !(motorMustRun)) motor.stop();
 			}
 	}
 }

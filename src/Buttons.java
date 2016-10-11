@@ -16,15 +16,9 @@ public class Buttons extends Thread{
 	}
 
 	public void run(){		
-		this.button.addButtonListener(new ButtonListener() {
-		      public void buttonPressed(Button b) {
-		    	isPressed = !isPressed;
-		        
-		      }
-
-		      public void buttonReleased(Button b) {
-		      }
-		    });  
-		Button.ESCAPE.waitForPressAndRelease();
+		button.addButtonListener(new ButtonListener() {
+		      public void buttonPressed(Button b) {isPressed = !isPressed;}
+		      public void buttonReleased(Button b) {}
+		});  
 	}
 }

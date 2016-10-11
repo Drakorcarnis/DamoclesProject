@@ -20,15 +20,15 @@ public Scheduler(ArrayList<Buttons> buttons, ArrayList<Motors> motors,  ArrayLis
 }
 	public void run(){
 		while(true){				
-			this.enterIsPressed = Robot.EnterListening.getState();
-			if(this.enterIsPressed != this.oldvalue & this.enterIsPressed==false){
-				this.oldvalue = this.enterIsPressed;
+			enterIsPressed = Robot.EnterListening.getState();
+			if(enterIsPressed != oldvalue & enterIsPressed==false){
+				oldvalue = enterIsPressed;
 				for(int i = 0; i < Robot.motors.size(); i++){
 					Robot.motors.get(i).stopmotor();
 				 }
 			}	
-			if(this.enterIsPressed != this.oldvalue & this.enterIsPressed==true){
-				this.oldvalue = this.enterIsPressed;
+			if(enterIsPressed != oldvalue & enterIsPressed==true){
+				oldvalue = enterIsPressed;
 				for(int i = 0; i < Robot.motors.size(); i++){
 					Robot.motors.get(i).startmotor();
 				 }
