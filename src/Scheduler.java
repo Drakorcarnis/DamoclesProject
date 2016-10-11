@@ -3,7 +3,7 @@ import java.util.ArrayList;
 public class Scheduler extends Thread{
 	private boolean enterIsPressed;
 	private boolean oldvalue = false;
-public Scheduler(ArrayList<Buttons> buttons, ArrayList<Motors> motors){
+public Scheduler(ArrayList<Buttons> buttons, ArrayList<Motors> motors,  ArrayList<Distance> distance){
 	
 	 for(int i = 0; i < buttons.size(); i++){
 		 Robot.buttons.get(i).setDaemon(true);
@@ -12,7 +12,10 @@ public Scheduler(ArrayList<Buttons> buttons, ArrayList<Motors> motors){
 	 for(int i = 0; i < motors.size(); i++){
 		 Robot.motors.get(i).setDaemon(true);
 		 Robot.motors.get(i).start();
-
+	 }
+	 for(int i = 0; i < distance.size(); i++){
+		 Robot.distance.get(i).setDaemon(true);
+		 Robot.distance.get(i).start();
 	 }
 }
 	public void run(){
