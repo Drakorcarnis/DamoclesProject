@@ -2,10 +2,10 @@ import lejos.nxt.Motor;
 import lejos.nxt.NXTRegulatedMotor;
 
 public class Motors extends Thread {
-	private boolean motorMustRun = false;
 	private int target;
 	private int range;
 	private int speed;
+	private boolean runFlag;
 	private NXTRegulatedMotor motor;
 	
 	public Motors(char motor, int range, int speed){
@@ -16,8 +16,15 @@ public class Motors extends Thread {
 		this.speed = speed;	
 		target = range;
 	}
-	public void stopmotor(){ motorMustRun = false;}
-	public void startmotor(){ motorMustRun = true;}
+	public void startThread(){ 
+		super.start();
+	}
+	public void pauseThread(){ 
+		runFlag = false;
+		}
+	public void resumeThread(){ 
+		runFlag = true;
+		}
 	
 	public void run(){
 			motor.setSpeed(speed);
@@ -25,8 +32,8 @@ public class Motors extends Thread {
 				if (motor.getTachoCount()<range & !(target == 0)) target = range;
 				else if (motor.getTachoCount()>=range) target = 0;
 				else if (motor.getTachoCount()<=0) target = range;
-				if(!(motor.isMoving()) & motorMustRun) motor.rotateTo(target, true);
-				else if(motor.isMoving() & !(motorMustRun)) motor.stop();
+				if(!(motor.isMoving()) & runFlag) motor.rotateTo(target, true);
+				else if(motor.isMoving() & !(runFlag)) motor.stop();
 			}
 	}
 }

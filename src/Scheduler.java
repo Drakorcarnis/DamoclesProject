@@ -1,37 +1,45 @@
-import java.util.ArrayList;
+
 
 public class Scheduler extends Thread{
 	private boolean enterIsPressed;
+	private boolean escapeIsPressed;
 	private boolean oldvalue = false;
-public Scheduler(ArrayList<Buttons> buttons, ArrayList<Motors> motors,  ArrayList<Distance> distance){
-	
-	 for(int i = 0; i < buttons.size(); i++){
-		 Robot.buttons.get(i).setDaemon(true);
-		 Robot.buttons.get(i).start();
-	 }
-	 for(int i = 0; i < motors.size(); i++){
-		 Robot.motors.get(i).setDaemon(true);
-		 Robot.motors.get(i).start();
-	 }
-	 for(int i = 0; i < distance.size(); i++){
-		 Robot.distance.get(i).setDaemon(true);
-		 Robot.distance.get(i).start();
-	 }
-}
+	public Scheduler(){
+		this.startThreads();
+	}
+	public void startThread(){ 
+		super.start();
+	}
+	public void startThreads(){
+		 for(int i = 0; i < Robot.buttons.size(); i++) ((Buttons) Robot.buttons.get(i)).startThread();
+		 for(int i = 0; i < Robot.motors.size(); i++) ((Motors) Robot.motors.get(i)).startThread();
+		 for(int i = 0; i < Robot.distance.size(); i++) ((Distance) Robot.distance.get(i)).startThread();
+
+	}
+	public void pauseThreads(){
+		 for(int i = 0; i < Robot.buttons.size(); i++) ((Buttons) Robot.buttons.get(i)).pauseThread();
+		 for(int i = 0; i < Robot.motors.size(); i++) ((Motors) Robot.motors.get(i)).pauseThread();
+		 for(int i = 0; i < Robot.distance.size(); i++) ((Distance) Robot.distance.get(i)).pauseThread();
+	}
+	public void resumeThreads(){
+		 for(int i = 0; i < Robot.buttons.size(); i++) ((Buttons) Robot.buttons.get(i)).resumeThread();
+		 for(int i = 0; i < Robot.motors.size(); i++) ((Motors) Robot.motors.get(i)).resumeThread();
+		 for(int i = 0; i < Robot.distance.size(); i++) ((Distance) Robot.distance.get(i)).resumeThread();
+	}
 	public void run(){
-		while(true){				
+		while(true){
+			escapeIsPressed = Robot.EscapeListening.getState();
 			enterIsPressed = Robot.EnterListening.getState();
+			if(escapeIsPressed){		
+				return;
+			}
 			if(enterIsPressed != oldvalue & enterIsPressed==false){
-				oldvalue = enterIsPressed;
-				for(int i = 0; i < Robot.motors.size(); i++){
-					Robot.motors.get(i).stopmotor();
-				 }
+				oldvalue = false;
+					pauseThreads();
 			}	
 			if(enterIsPressed != oldvalue & enterIsPressed==true){
-				oldvalue = enterIsPressed;
-				for(int i = 0; i < Robot.motors.size(); i++){
-					Robot.motors.get(i).startmotor();
-				 }
+				oldvalue = true;
+				resumeThreads();
 			}	
 		}
 	}
