@@ -2,19 +2,22 @@ import lejos.nxt.LCD;
 import lejos.nxt.SensorPort;
 import lejos.nxt.Sound;
 import lejos.nxt.addon.OpticalDistanceSensor;
-public class Distance extends Thread {
+public class Distances implements Runnable{
 	private OpticalDistanceSensor DistanceSensor ;
 	public int distance;
 	private boolean runFlag;
-	public Distance(){
+	private Thread thread;
+	
+	public Distances(){
 	DistanceSensor= new OpticalDistanceSensor(SensorPort.S1);
 	DistanceSensor.setSensorModule(OpticalDistanceSensor.GP2YA02);
+	thread = new Thread(this);
 	}
 	public int getDistance(){
 		return distance;
 	}
 	public void startThread(){ 
-		super.start();
+		thread.start();
 	}
 	public void pauseThread(){ 
 		runFlag = false;

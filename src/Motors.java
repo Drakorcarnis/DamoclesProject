@@ -1,12 +1,13 @@
 import lejos.nxt.Motor;
 import lejos.nxt.NXTRegulatedMotor;
 
-public class Motors extends Thread {
+public class Motors implements Runnable {
 	private int target;
 	private int range;
 	private int speed;
 	private boolean runFlag;
 	private NXTRegulatedMotor motor;
+	private Thread thread;
 	
 	public Motors(char motor, int range, int speed){
 		if(motor=='A') this.motor = Motor.A;
@@ -15,9 +16,10 @@ public class Motors extends Thread {
 		this.range = range;
 		this.speed = speed;	
 		target = range;
+		thread = new Thread(this);
 	}
 	public void startThread(){ 
-		super.start();
+		thread.start();
 	}
 	public void pauseThread(){ 
 		runFlag = false;
