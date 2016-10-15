@@ -9,22 +9,26 @@ public class Distances implements Runnable{
 	private Thread thread;
 	
 	public Distances(){
-	DistanceSensor= new OpticalDistanceSensor(SensorPort.S1);
-	DistanceSensor.setSensorModule(OpticalDistanceSensor.GP2YA02);
+		DistanceSensor= new OpticalDistanceSensor(SensorPort.S1);
+		DistanceSensor.setSensorModule(OpticalDistanceSensor.GP2YA02);
 	thread = new Thread(this);
 	}
-	public int getDistance(){
-		return distance;
-	}
-	public void startThread(){ 
-		thread.start();
-	}
-	public void pauseThread(){ 
+	
+
+	public void stopThread(){
+		thread.setDaemon(true);
 		runFlag = false;
-		}
-	public void resumeThread(){ 
+	}
+	
+	public void pauseThread(){
+		runFlag = false;
+	}
+	
+	public void startThread(){ 
+		if (!thread.isAlive()) thread.start();
 		runFlag = true;
-		}
+	}
+	
 	public void run(){
 		while(true){
 			if(runFlag){
@@ -33,6 +37,7 @@ public class Distances implements Runnable{
 				LCD.drawInt(distance, 0, 0);
 				Sound.playTone(6000 - distance, 10);
 			}
+			else try {Thread.sleep(100);} catch (InterruptedException e) {e.printStackTrace();}
 		}
 	}
 }

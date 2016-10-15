@@ -18,15 +18,20 @@ public class Motors implements Runnable {
 		target = range;
 		thread = new Thread(this);
 	}
-	public void startThread(){ 
-		thread.start();
+
+	public void stopThread(){
+		thread.setDaemon(true);
+		runFlag = false;
 	}
+	
 	public void pauseThread(){ 
 		runFlag = false;
-		}
-	public void resumeThread(){ 
+	}
+	
+	public void startThread(){ 
+		if (!thread.isAlive()) thread.start();
 		runFlag = true;
-		}
+	}
 	
 	public void run(){
 			motor.setSpeed(speed);
@@ -36,6 +41,7 @@ public class Motors implements Runnable {
 				else if (motor.getTachoCount()<=0) target = range;
 				if(!(motor.isMoving()) & runFlag) motor.rotateTo(target, true);
 				else if(motor.isMoving() & !(runFlag)) motor.stop();
+				else try {Thread.sleep(100);} catch (InterruptedException e) {e.printStackTrace();}
 			}
 	}
 }

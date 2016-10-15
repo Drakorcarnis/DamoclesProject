@@ -1,47 +1,67 @@
+import java.util.ArrayList;
 
-
-public class Scheduler implements Runnable{
+public class Scheduler implements Runnable {
+	private Thread thread;
 	private boolean enterIsPressed;
 	private boolean escapeIsPressed;
 	private boolean oldvalue = false;
-	private Thread thread;
+	
 	public Scheduler(){
 		thread = new Thread(this);
-		this.startThreads();
 	}
+	
+	public void stopThread(){
+		thread.setDaemon(true);
+	}
+	
 	public void startThread(){ 
-		thread.start();
+		if (!thread.isAlive()) thread.start();
 	}
-	public void startThreads(){
-		 for(int i = 0; i < Robot.buttons.size(); i++) ((Buttons) Robot.buttons.get(i)).startThread();
-		 for(int i = 0; i < Robot.motors.size(); i++) ((Motors) Robot.motors.get(i)).startThread();
-		 for(int i = 0; i < Robot.distance.size(); i++) ((Distances) Robot.distance.get(i)).startThread();
+	
+	public void startActuators(){
+		 for(int i = 0; i < Robot.actuators.size(); i++) {
+			 for(int j = 0; j < ((ArrayList<?>)Robot.actuators.get(i)).size(); j++) {
+				 if ((((ArrayList<?>)Robot.actuators.get(i)).get(j)) instanceof Motors) ((Motors) ((ArrayList<?>)Robot.actuators.get(i)).get(j)).startThread();
+				 else if ((((ArrayList<?>)Robot.actuators.get(i)).get(j)) instanceof Distances) ((Distances) ((ArrayList<?>)Robot.actuators.get(i)).get(j)).startThread();
+			 }
+		 }
 	}
-	public void pauseThreads(){
-		 for(int i = 0; i < Robot.buttons.size(); i++) ((Buttons) Robot.buttons.get(i)).pauseThread();
-		 for(int i = 0; i < Robot.motors.size(); i++) ((Motors) Robot.motors.get(i)).pauseThread();
-		 for(int i = 0; i < Robot.distance.size(); i++) ((Distances) Robot.distance.get(i)).pauseThread();
+	
+	public void pauseActuators(){
+		for(int i = 0; i < Robot.actuators.size(); i++) {
+			 for(int j = 0; j < ((ArrayList<?>)Robot.actuators.get(i)).size(); j++) {
+				 if ((((ArrayList<?>)Robot.actuators.get(i)).get(j)) instanceof Motors) ((Motors) ((ArrayList<?>)Robot.actuators.get(i)).get(j)).pauseThread();
+				 else if ((((ArrayList<?>)Robot.actuators.get(i)).get(j)) instanceof Distances) ((Distances) ((ArrayList<?>)Robot.actuators.get(i)).get(j)).pauseThread();
+			 }
+		 }
 	}
-	public void resumeThreads(){
-		 for(int i = 0; i < Robot.buttons.size(); i++) ((Buttons) Robot.buttons.get(i)).resumeThread();
-		 for(int i = 0; i < Robot.motors.size(); i++) ((Motors) Robot.motors.get(i)).resumeThread();
-		 for(int i = 0; i < Robot.distance.size(); i++) ((Distances) Robot.distance.get(i)).resumeThread();
+	
+	public void stopActuators(){
+		for(int i = 0; i < Robot.actuators.size(); i++) {
+			 for(int j = 0; j < ((ArrayList<?>)Robot.actuators.get(i)).size(); j++) {
+				 if ((((ArrayList<?>)Robot.actuators.get(i)).get(j)) instanceof Motors) ((Motors) ((ArrayList<?>)Robot.actuators.get(i)).get(j)).stopThread();
+				 else if ((((ArrayList<?>)Robot.actuators.get(i)).get(j)) instanceof Distances) ((Distances) ((ArrayList<?>)Robot.actuators.get(i)).get(j)).stopThread();
+			 }
+		 }
 	}
+	
 	public void run(){
 		while(true){
-			escapeIsPressed = Robot.EscapeListening.getState();
-			enterIsPressed = Robot.EnterListening.getState();
+			escapeIsPressed = Robot.EscapeListening.isPressed;
+			enterIsPressed = Robot.EnterListening.isPressed;
 			if(escapeIsPressed){		
-				return;
+				stopActuators();
+				stopThread();
 			}
-			if(enterIsPressed != oldvalue & enterIsPressed==false){
+			else if(enterIsPressed != oldvalue & enterIsPressed==false){
 				oldvalue = false;
-					pauseThreads();
+				pauseActuators();
 			}	
-			if(enterIsPressed != oldvalue & enterIsPressed==true){
+			else if(enterIsPressed != oldvalue & enterIsPressed==true){
 				oldvalue = true;
-				resumeThreads();
-			}	
+				startActuators();
+			}
+			try {Thread.sleep(100);} catch (InterruptedException e) {e.printStackTrace();}
 		}
 	}
 	
