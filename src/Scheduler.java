@@ -47,8 +47,8 @@ public class Scheduler implements Runnable {
 	
 	public void run(){
 		while(true){
-			escapeIsPressed = Robot.EscapeListening.isPressed;
-			enterIsPressed = Robot.EnterListening.isPressed;
+			escapeIsPressed = Robot.escapeListening.isPressed;
+			enterIsPressed = Robot.enterListening.isPressed;
 			if(escapeIsPressed){		
 				stopActuators();
 				stopThread();

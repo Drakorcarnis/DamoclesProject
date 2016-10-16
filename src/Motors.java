@@ -41,7 +41,7 @@ public class Motors implements Runnable {
 				else if (motor.getTachoCount()<=0) target = range;
 				if(!(motor.isMoving()) & runFlag) motor.rotateTo(target, true);
 				else if(motor.isMoving() & !(runFlag)) motor.stop();
-				else try {Thread.sleep(100);} catch (InterruptedException e) {e.printStackTrace();}
+				try {Thread.sleep(100);} catch (InterruptedException e) {e.printStackTrace();}
 			}
 	}
 }
