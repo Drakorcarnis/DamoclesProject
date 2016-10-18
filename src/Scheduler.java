@@ -18,7 +18,7 @@ public class Scheduler implements Runnable {
 		if (!thread.isAlive()) thread.start();
 	}
 	
-	public void startActuators(){
+	public void startDevices(){
 		 for(int i = 0; i < Robot.devices.size(); i++) {
 			 for(int j = 0; j < ((ArrayList<?>)Robot.devices.get(i)).size(); j++) {
 				 if ((((ArrayList<?>)Robot.devices.get(i)).get(j)) instanceof Motors) ((Motors) ((ArrayList<?>)Robot.devices.get(i)).get(j)).startThread();
@@ -27,7 +27,7 @@ public class Scheduler implements Runnable {
 		 }
 	}
 	
-	public void pauseActuators(){
+	public void pauseDevices(){
 		for(int i = 0; i < Robot.devices.size(); i++) {
 			 for(int j = 0; j < ((ArrayList<?>)Robot.devices.get(i)).size(); j++) {
 				 if ((((ArrayList<?>)Robot.devices.get(i)).get(j)) instanceof Motors) ((Motors) ((ArrayList<?>)Robot.devices.get(i)).get(j)).pauseThread();
@@ -36,7 +36,7 @@ public class Scheduler implements Runnable {
 		 }
 	}
 	
-	public void stopActuators(){
+	public void stopDevices(){
 		for(int i = 0; i < Robot.devices.size(); i++) {
 			 for(int j = 0; j < ((ArrayList<?>)Robot.devices.get(i)).size(); j++) {
 				 if ((((ArrayList<?>)Robot.devices.get(i)).get(j)) instanceof Motors) ((Motors) ((ArrayList<?>)Robot.devices.get(i)).get(j)).stopThread();
@@ -50,16 +50,16 @@ public class Scheduler implements Runnable {
 			escapeIsPressed = Robot.escapeListening.isPressed;
 			enterIsPressed = Robot.enterListening.isPressed;
 			if(escapeIsPressed){		
-				stopActuators();
+				stopDevices();
 				stopThread();
 			}
 			else if(enterIsPressed != oldvalue & enterIsPressed==false){
 				oldvalue = false;
-				pauseActuators();
+				pauseDevices();
 			}	
 			else if(enterIsPressed != oldvalue & enterIsPressed==true){
 				oldvalue = true;
-				startActuators();
+				startDevices();
 			}
 			try {Thread.sleep(100);} catch (InterruptedException e) {e.printStackTrace();}
 		}
