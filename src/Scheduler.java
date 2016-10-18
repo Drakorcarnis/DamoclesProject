@@ -19,28 +19,28 @@ public class Scheduler implements Runnable {
 	}
 	
 	public void startActuators(){
-		 for(int i = 0; i < Robot.actuators.size(); i++) {
-			 for(int j = 0; j < ((ArrayList<?>)Robot.actuators.get(i)).size(); j++) {
-				 if ((((ArrayList<?>)Robot.actuators.get(i)).get(j)) instanceof Motors) ((Motors) ((ArrayList<?>)Robot.actuators.get(i)).get(j)).startThread();
-				 else if ((((ArrayList<?>)Robot.actuators.get(i)).get(j)) instanceof Distances) ((Distances) ((ArrayList<?>)Robot.actuators.get(i)).get(j)).startThread();
+		 for(int i = 0; i < Robot.devices.size(); i++) {
+			 for(int j = 0; j < ((ArrayList<?>)Robot.devices.get(i)).size(); j++) {
+				 if ((((ArrayList<?>)Robot.devices.get(i)).get(j)) instanceof Motors) ((Motors) ((ArrayList<?>)Robot.devices.get(i)).get(j)).startThread();
+				 else if ((((ArrayList<?>)Robot.devices.get(i)).get(j)) instanceof Distances) ((Distances) ((ArrayList<?>)Robot.devices.get(i)).get(j)).startThread();
 			 }
 		 }
 	}
 	
 	public void pauseActuators(){
-		for(int i = 0; i < Robot.actuators.size(); i++) {
-			 for(int j = 0; j < ((ArrayList<?>)Robot.actuators.get(i)).size(); j++) {
-				 if ((((ArrayList<?>)Robot.actuators.get(i)).get(j)) instanceof Motors) ((Motors) ((ArrayList<?>)Robot.actuators.get(i)).get(j)).pauseThread();
-				 else if ((((ArrayList<?>)Robot.actuators.get(i)).get(j)) instanceof Distances) ((Distances) ((ArrayList<?>)Robot.actuators.get(i)).get(j)).pauseThread();
+		for(int i = 0; i < Robot.devices.size(); i++) {
+			 for(int j = 0; j < ((ArrayList<?>)Robot.devices.get(i)).size(); j++) {
+				 if ((((ArrayList<?>)Robot.devices.get(i)).get(j)) instanceof Motors) ((Motors) ((ArrayList<?>)Robot.devices.get(i)).get(j)).pauseThread();
+				 else if ((((ArrayList<?>)Robot.devices.get(i)).get(j)) instanceof Distances) ((Distances) ((ArrayList<?>)Robot.devices.get(i)).get(j)).pauseThread();
 			 }
 		 }
 	}
 	
 	public void stopActuators(){
-		for(int i = 0; i < Robot.actuators.size(); i++) {
-			 for(int j = 0; j < ((ArrayList<?>)Robot.actuators.get(i)).size(); j++) {
-				 if ((((ArrayList<?>)Robot.actuators.get(i)).get(j)) instanceof Motors) ((Motors) ((ArrayList<?>)Robot.actuators.get(i)).get(j)).stopThread();
-				 else if ((((ArrayList<?>)Robot.actuators.get(i)).get(j)) instanceof Distances) ((Distances) ((ArrayList<?>)Robot.actuators.get(i)).get(j)).stopThread();
+		for(int i = 0; i < Robot.devices.size(); i++) {
+			 for(int j = 0; j < ((ArrayList<?>)Robot.devices.get(i)).size(); j++) {
+				 if ((((ArrayList<?>)Robot.devices.get(i)).get(j)) instanceof Motors) ((Motors) ((ArrayList<?>)Robot.devices.get(i)).get(j)).stopThread();
+				 else if ((((ArrayList<?>)Robot.devices.get(i)).get(j)) instanceof Distances) ((Distances) ((ArrayList<?>)Robot.devices.get(i)).get(j)).stopThread();
 			 }
 		 }
 	}

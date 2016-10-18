@@ -1,7 +1,7 @@
 import java.util.ArrayList;
 
 public class Robot {
-	static ArrayList<ArrayList<?>> actuators = new ArrayList<ArrayList<?>>();//Crée un tableau qui contiendra toutes les instances d'actuateurs.
+	static ArrayList<ArrayList<?>> devices = new ArrayList<ArrayList<?>>();//Crée un tableau qui contiendra toutes les instances d'actuateurs.
 	static ArrayList<Distances> distances = new ArrayList<Distances>();//Crée un tableau qui contiendra toutes les instances de la classe Distances.
 	static ArrayList<Buttons> buttons = new ArrayList<Buttons>();//Crée un tableau qui contiendra toutes les instances de la classe Buttons.
 	static ArrayList<Motors> motors = new ArrayList<Motors>();//Crée un tableau qui contiendra toutes les instances de la classe Motors.
@@ -18,8 +18,8 @@ public class Robot {
 		distances.add(distance);
 		motors.add(motorARunning);
 		motors.add(motorBRunning);
-		actuators.add(motors);
-		actuators.add(distances);
+		devices.add(motors);
+		devices.add(distances);
 		scheduler = new Scheduler();//Instancie une classe permettant de gérer tous les actuateurs.
 		scheduler.startThread();
 	}
