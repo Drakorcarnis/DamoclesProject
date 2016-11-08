@@ -1,13 +1,17 @@
 import java.util.ArrayList;
 
+import lejos.nxt.LCD;
+
 public class Scheduler implements Runnable {
 	private Thread thread;
 	private boolean enterIsPressed;
 	private boolean escapeIsPressed;
 	private boolean oldvalue = false;
+	public String mode;
 	
 	public Scheduler(){
 		thread = new Thread(this);
+		mode = "research";
 	}
 	
 	public void stopThread(){
@@ -61,7 +65,16 @@ public class Scheduler implements Runnable {
 				oldvalue = true;
 				startDevices();
 			}
+			if ((Robot.distance.distance<300)&(Robot.distance.distance>250)){
+				Robot.motorARunning.internalMode = "lockOnTarget";
+				Robot.motorBRunning.internalMode = "lockOnTarget";
+			}
+			else {
+				Robot.motorARunning.internalMode = "research";
+				Robot.motorBRunning.internalMode = "research";
+			}
 			try {Thread.sleep(100);} catch (InterruptedException e) {e.printStackTrace();}
+			LCD.refresh();
 		}
 	}
 	

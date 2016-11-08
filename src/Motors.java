@@ -3,10 +3,15 @@ import lejos.nxt.NXTRegulatedMotor;
 
 public class Motors implements Runnable {
 	private int target;
+	private int oldTarget;
 	private int range;
-	private boolean runFlag;
-	private NXTRegulatedMotor motor;
+	private boolean mustPause;
+	private boolean mustStop;
+	public String internalMode;
+	public NXTRegulatedMotor motor;
+	public int lockTarget;
 	private Thread thread;
+	private boolean targetFlag;
 	
 	public Motors(char motor, int range, int speed){
 		if(motor=='A') this.motor = Motor.A;
@@ -21,25 +26,46 @@ public class Motors implements Runnable {
 
 	public void stopThread(){
 		thread.setDaemon(true);
-		runFlag = false;
+		mustPause = true;
+		mustStop = true;
 	}
 	
 	public void pauseThread(){ 
-		runFlag = false;
+		mustPause = true;
 	}
 	
 	public void startThread(){ 
 		thread.setDaemon(false);
 		if (!thread.isAlive()) thread.start();
-		runFlag = true;
+		mustStop = false;
+		mustPause = false;
 	}
 	
-	public void run(){			
-			while(true){
+	public void computeTarget(){
+		if (internalMode.equals("research")){
+			if(oldTarget!=0){ 
+				target = oldTarget;
+				oldTarget = 0;
+			}
+			else{
 				if (motor.getTachoCount()>=range) target = 0;
 				else if (motor.getTachoCount()<=0) target = range;
-				if(!(motor.isMoving()) & runFlag) motor.rotateTo(target, true);
-				else if(motor.isMoving() & !(runFlag)) motor.flt(true);
+			}
+			targetFlag = true;
+		}
+		else if (internalMode.equals("lockOnTarget")&targetFlag){
+			oldTarget = target;
+			motor.stop(true);
+			targetFlag = false;
+		}
+	}
+	public void run(){			
+			while(!mustStop){
+				computeTarget();
+				if (internalMode.equals("research")){
+					if(!(motor.isMoving()) & !mustPause) motor.rotateTo(target, true);
+					else if(motor.isMoving() & mustPause) motor.flt(true);
+				}
 				try {Thread.sleep(100);} catch (InterruptedException e) {e.printStackTrace();}
 			}
 	}

@@ -1,5 +1,7 @@
 import java.util.ArrayList;
 
+import lejos.nxt.comm.RConsole;
+
 public class Robot {
 	static ArrayList<ArrayList<?>> devices = new ArrayList<ArrayList<?>>();//Crée un tableau qui contiendra toutes les instances d'actuateurs.
 	static ArrayList<Distances> distances = new ArrayList<Distances>();//Crée un tableau qui contiendra toutes les instances de la classe Distances.
@@ -13,6 +15,7 @@ public class Robot {
 	static Scheduler scheduler;
 	
 	public static void main(String[] args){
+		RConsole.openUSB(0);
 		buttons.add(enterListening);
 		buttons.add(escapeListening);
 		distances.add(distance);

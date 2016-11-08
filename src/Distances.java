@@ -1,4 +1,3 @@
-import lejos.nxt.LCD;
 import lejos.nxt.SensorPort;
 import lejos.nxt.Sound;
 import lejos.nxt.addon.OpticalDistanceSensor;
@@ -34,8 +33,7 @@ public class Distances implements Runnable{
 		while(true){
 			if(runFlag){
 				distance = distanceSensor.getDistance();
-				try {Thread.sleep(500);} catch (InterruptedException e) {e.printStackTrace();}
-				LCD.drawInt(distance, 0, 0);
+				try {Thread.sleep(100);} catch (InterruptedException e) {e.printStackTrace();}
 				Sound.playTone(6000 - distance, 10);
 			}
 			else try {Thread.sleep(100);} catch (InterruptedException e) {e.printStackTrace();}
