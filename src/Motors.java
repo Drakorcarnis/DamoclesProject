@@ -1,5 +1,5 @@
-import lejos.nxt.Motor;
-import lejos.nxt.NXTRegulatedMotor;
+import lejos.hardware.motor.Motor;
+import lejos.hardware.motor.NXTRegulatedMotor;
 
 public class Motors implements Runnable {
 	private int target;

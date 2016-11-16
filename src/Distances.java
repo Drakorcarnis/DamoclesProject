@@ -1,16 +1,22 @@
-import lejos.nxt.SensorPort;
-import lejos.nxt.Sound;
-import lejos.nxt.addon.OpticalDistanceSensor;
+import lejos.hardware.port.SensorPort;
+import lejos.hardware.Sound;
+import lejos.hardware.lcd.LCD;
+import lejos.hardware.sensor.MindsensorsDistanceSensorV2;
+import lejos.hardware.sensor.SensorMode;
 
 public class Distances implements Runnable{
-	private OpticalDistanceSensor distanceSensor;
+	private MindsensorsDistanceSensorV2 distanceSensor;
 	public int distance;
 	private boolean runFlag;
 	private Thread thread;
+	SensorMode distanceMode;
+	float[] sample;
 	
 	public Distances(){
-		distanceSensor= new OpticalDistanceSensor(SensorPort.S1);
-		distanceSensor.setSensorModule(OpticalDistanceSensor.GP2YA02);
+		distanceSensor = new MindsensorsDistanceSensorV2(SensorPort.S1);
+		distanceSensor.powerOn();distanceMode = distanceSensor.getDistanceMode();
+		float[] sample=new float[1];
+		distanceMode.fetchSample(sample,0);
 	thread = new Thread(this);
 	}
 	
@@ -32,7 +38,9 @@ public class Distances implements Runnable{
 	public void run(){
 		while(true){
 			if(runFlag){
-				distance = distanceSensor.getDistance();
+//				distance = distanceSensor.getDistance();
+				distanceMode.fetchSample(sample,0);
+				LCD.drawString(Float.toString(sample[0]), 4, 4);
 				try {Thread.sleep(100);} catch (InterruptedException e) {e.printStackTrace();}
 				Sound.playTone(6000 - distance, 10);
 			}

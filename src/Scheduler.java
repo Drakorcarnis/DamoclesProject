@@ -1,7 +1,5 @@
 import java.util.ArrayList;
 
-import lejos.nxt.LCD;
-
 public class Scheduler implements Runnable {
 	private Thread thread;
 	private boolean enterIsPressed;
@@ -74,7 +72,6 @@ public class Scheduler implements Runnable {
 				Robot.motorBRunning.internalMode = "research";
 			}
 			try {Thread.sleep(100);} catch (InterruptedException e) {e.printStackTrace();}
-			LCD.refresh();
 		}
 	}
 	
