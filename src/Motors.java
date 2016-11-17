@@ -25,7 +25,6 @@ public class Motors implements Runnable {
 	}
 
 	public void stopThread(){
-		thread.setDaemon(true);
 		mustPause = true;
 		mustStop = true;
 	}
@@ -35,7 +34,6 @@ public class Motors implements Runnable {
 	}
 	
 	public void startThread(){ 
-		thread.setDaemon(false);
 		if (!thread.isAlive()) thread.start();
 		mustStop = false;
 		mustPause = false;

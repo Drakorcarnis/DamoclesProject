@@ -15,9 +15,10 @@ public class Distances implements Runnable{
 	public Distances(){
 		distanceSensor = new MindsensorsDistanceSensorV2(SensorPort.S1);
 		distanceSensor.powerOn();distanceMode = distanceSensor.getDistanceMode();
-		float[] sample=new float[1];
+		sample=new float[1];
 		distanceMode.fetchSample(sample,0);
-	thread = new Thread(this);
+		distance = 1000;
+		thread = new Thread(this);
 	}
 	
 
@@ -40,7 +41,7 @@ public class Distances implements Runnable{
 			if(runFlag){
 //				distance = distanceSensor.getDistance();
 				distanceMode.fetchSample(sample,0);
-				LCD.drawString(Float.toString(sample[0]), 4, 4);
+				LCD.drawString(Float.toString(sample[0]), 0, 0);
 				try {Thread.sleep(100);} catch (InterruptedException e) {e.printStackTrace();}
 				Sound.playTone(6000 - distance, 10);
 			}
