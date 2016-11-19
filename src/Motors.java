@@ -2,7 +2,7 @@ import lejos.hardware.motor.Motor;
 import lejos.hardware.motor.NXTRegulatedMotor;
 
 public class Motors implements Runnable {
-	private double target;
+	public double target;
 	private double oldTarget;
 	private int range;
 	private boolean mustPause;
@@ -13,6 +13,8 @@ public class Motors implements Runnable {
 	private Thread thread;
 	private boolean targetFlag;
 	private char motorPort;
+	double x;
+	double y;
 	
 	public Motors(char motorPort, int range, int speed){
 		this.motorPort = motorPort;
@@ -52,13 +54,22 @@ public class Motors implements Runnable {
 			else{
 				if (motor.getTachoCount()>=range) target = 0;
 				else if (motor.getTachoCount()<=0) target = range;
+				else target = 0;
 			}
 		}
 		else if (internalMode.equals("lockOnTarget")){
 			if(targetFlag)oldTarget = target;
 			targetFlag = false;
-			if(motorPort=='A')target = motor.getTachoCount() + Robot.camera.target.getX();
-			else if(motorPort=='B')target = motor.getTachoCount() + Robot.camera.target.getY();
+			if(motorPort=='A'){
+				if((x=Robot.camera.target.getX())>55)target = motor.getTachoCount() + x-50;
+				else if((x=Robot.camera.target.getX())<45)target = motor.getTachoCount() +50-x;
+				else motor.flt(true);
+			}	
+			else if(motorPort=='B'){
+				if((x=Robot.camera.target.getY())>55)target = motor.getTachoCount() + x-50;
+				else if((x=Robot.camera.target.getY())<45)target = motor.getTachoCount() +50-x;
+				else motor.flt(true);
+			}	
 		}
 	}
 	public void run(){			
@@ -66,7 +77,7 @@ public class Motors implements Runnable {
 				computeTarget();
 				if(!(motor.isMoving()) & !mustPause) motor.rotateTo((int) target, true);
 				else if(motor.isMoving() & mustPause) motor.flt(true);
-				try {Thread.sleep(100);} catch (InterruptedException e) {e.printStackTrace();}
+				try {Thread.sleep(30);} catch (InterruptedException e) {e.printStackTrace();}
 			}
 	}
 }

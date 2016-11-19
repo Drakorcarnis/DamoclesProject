@@ -7,15 +7,15 @@ public class Scheduler implements Runnable {
 	private boolean escapeIsPressed;
 	private boolean oldvalue;
 	public String mode;
+	private boolean mustStop;
 	
 	public Scheduler(){
 		thread = new Thread(this);
 		mode = "research";
 		oldvalue = false;
 	}
-	
 	public void stopThread(){
-		thread.setDaemon(true);
+		mustStop = true;
 	}
 	
 	public void startThread(){ 
@@ -44,7 +44,7 @@ public class Scheduler implements Runnable {
 	}
 	
 	public void run(){
-		while(true){
+		while(!mustStop){
 			escapeIsPressed = Robot.escapeListening.isPressed;
 			enterIsPressed = Robot.enterListening.isPressed;
 			if(escapeIsPressed){		
@@ -63,14 +63,18 @@ public class Scheduler implements Runnable {
 				LCD.drawInt(Robot.distance.distance, 0, 0);
 				Sound.playTone(6000 - Robot.distance.distance*30, 10);
 			}
-//			if (Robot.camera.target != null){
-//				Robot.motorA.internalMode = "lockOnTarget";
-//				Robot.motorB.internalMode = "lockOnTarget";
-//			}
-//			else {
+			if (Robot.camera.targetIsInView){
+				Robot.motorA.internalMode = "lockOnTarget";
+				Robot.motorB.internalMode = "lockOnTarget";
+			}
+			else {
 				Robot.motorA.internalMode = "research";
 				Robot.motorB.internalMode = "research";
-//			}
+			}
+			LCD.drawString("A.Mode = "+Robot.motorA.internalMode, 0, 1);
+			LCD.drawString("B.Mode = "+Robot.motorB.internalMode, 0, 2);
+			LCD.drawString("A.target = "+Double.toString(Robot.motorA.target), 0, 3);
+			LCD.drawString("B.target = "+Double.toString(Robot.motorB.target), 0, 4);
 			try {Thread.sleep(100);} catch (InterruptedException e) {e.printStackTrace();}
 		}
 	}
