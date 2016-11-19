@@ -1,16 +1,17 @@
-import java.util.ArrayList;
+import lejos.hardware.Sound;
 import lejos.hardware.lcd.LCD;
 
 public class Scheduler implements Runnable {
 	private Thread thread;
 	private boolean enterIsPressed;
 	private boolean escapeIsPressed;
-	private boolean oldvalue = false;
+	private boolean oldvalue;
 	public String mode;
 	
 	public Scheduler(){
 		thread = new Thread(this);
 		mode = "research";
+		oldvalue = false;
 	}
 	
 	public void stopThread(){
@@ -22,30 +23,24 @@ public class Scheduler implements Runnable {
 	}
 	
 	public void startDevices(){
-		 for(int i = 0; i < Robot.devices.size(); i++) {
-			 for(int j = 0; j < ((ArrayList<?>)Robot.devices.get(i)).size(); j++) {
-				 if ((((ArrayList<?>)Robot.devices.get(i)).get(j)) instanceof Motors) ((Motors) ((ArrayList<?>)Robot.devices.get(i)).get(j)).startThread();
-				 else if ((((ArrayList<?>)Robot.devices.get(i)).get(j)) instanceof Distances) ((Distances) ((ArrayList<?>)Robot.devices.get(i)).get(j)).startThread();
-			 }
-		 }
+		 Robot.motorA.startThread();
+		 Robot.motorB.startThread();
+		 Robot.distance.startThread();
+		 Robot.camera.startThread();
 	}
 	
 	public void pauseDevices(){
-		for(int i = 0; i < Robot.devices.size(); i++) {
-			 for(int j = 0; j < ((ArrayList<?>)Robot.devices.get(i)).size(); j++) {
-				 if ((((ArrayList<?>)Robot.devices.get(i)).get(j)) instanceof Motors) ((Motors) ((ArrayList<?>)Robot.devices.get(i)).get(j)).pauseThread();
-				 else if ((((ArrayList<?>)Robot.devices.get(i)).get(j)) instanceof Distances) ((Distances) ((ArrayList<?>)Robot.devices.get(i)).get(j)).pauseThread();
-			 }
-		 }
+		Robot.motorA.pauseThread();
+		Robot.motorB.pauseThread();
+		Robot.distance.pauseThread();
+		Robot.camera.pauseThread();
 	}
 	
 	public void stopDevices(){
-		for(int i = 0; i < Robot.devices.size(); i++) {
-			 for(int j = 0; j < ((ArrayList<?>)Robot.devices.get(i)).size(); j++) {
-				 if ((((ArrayList<?>)Robot.devices.get(i)).get(j)) instanceof Motors) ((Motors) ((ArrayList<?>)Robot.devices.get(i)).get(j)).stopThread();
-				 else if ((((ArrayList<?>)Robot.devices.get(i)).get(j)) instanceof Distances) ((Distances) ((ArrayList<?>)Robot.devices.get(i)).get(j)).stopThread();
-			 }
-		 }
+		Robot.motorA.stopThread();
+		Robot.motorB.stopThread();
+		Robot.distance.stopThread();
+		Robot.camera.stopThread();
 	}
 	
 	public void run(){
@@ -56,23 +51,26 @@ public class Scheduler implements Runnable {
 				stopDevices();
 				stopThread();
 			}
-			else if(enterIsPressed != oldvalue & enterIsPressed==false){
+			else if(enterIsPressed != oldvalue & !enterIsPressed){
 				oldvalue = false;
 				pauseDevices();
 			}	
-			else if(enterIsPressed != oldvalue & enterIsPressed==true){
+			else if(enterIsPressed != oldvalue & enterIsPressed){
 				oldvalue = true;
 				startDevices();
 			}
-			if ((Robot.distance.distance<300)&(Robot.distance.distance>250)){
-				Robot.motorARunning.internalMode = "lockOnTarget";
-				Robot.motorBRunning.internalMode = "lockOnTarget";
+			if(enterIsPressed){
+				LCD.drawInt(Robot.distance.distance, 0, 0);
+				Sound.playTone(6000 - Robot.distance.distance*30, 10);
 			}
-			else {
-				Robot.motorARunning.internalMode = "research";
-				Robot.motorBRunning.internalMode = "research";
-			}
-			LCD.drawString(Boolean.toString(enterIsPressed),0,1);
+//			if (Robot.camera.target != null){
+//				Robot.motorA.internalMode = "lockOnTarget";
+//				Robot.motorB.internalMode = "lockOnTarget";
+//			}
+//			else {
+				Robot.motorA.internalMode = "research";
+				Robot.motorB.internalMode = "research";
+//			}
 			try {Thread.sleep(100);} catch (InterruptedException e) {e.printStackTrace();}
 		}
 	}

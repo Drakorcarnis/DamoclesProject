@@ -1,51 +1,49 @@
 import lejos.hardware.port.SensorPort;
-import lejos.hardware.Sound;
-import lejos.hardware.lcd.LCD;
 import lejos.hardware.sensor.MindsensorsDistanceSensorV2;
 import lejos.hardware.sensor.SensorMode;
 
 public class Distances implements Runnable{
 	private MindsensorsDistanceSensorV2 distanceSensor;
-	public int distance;
-	private boolean runFlag;
+	private boolean mustPause;
+	private boolean mustStop;
 	private Thread thread;
-	SensorMode distanceMode;
+	private SensorMode distanceMode;
+	public int distance;
 	float[] sample;
 	
 	public Distances(){
 		distanceSensor = new MindsensorsDistanceSensorV2(SensorPort.S1);
-		distanceSensor.powerOn();distanceMode = distanceSensor.getDistanceMode();
+		distanceSensor.powerOn();
+		distanceMode = distanceSensor.getDistanceMode();
 		sample=new float[1];
 		distanceMode.fetchSample(sample,0);
-		distance = 1000;
 		thread = new Thread(this);
 	}
 	
 
 	public void stopThread(){
-		thread.setDaemon(true);
-		runFlag = false;
+		mustPause = true;
+		mustStop = true;
 	}
 	
 	public void pauseThread(){
-		runFlag = false;
+		mustPause = true;
 	}
 	
 	public void startThread(){ 
+		mustStop = false;
+		mustPause = false;
 		if (!thread.isAlive()) thread.start();
-		runFlag = true;
 	}
 	
 	public void run(){
-		while(true){
-			if(runFlag){
-//				distance = distanceSensor.getDistance();
+		while(!mustStop){
+			if(!mustPause){
 				distanceMode.fetchSample(sample,0);
-				LCD.drawString(Float.toString(sample[0]), 0, 0);
-				try {Thread.sleep(100);} catch (InterruptedException e) {e.printStackTrace();}
-				Sound.playTone(6000 - distance, 10);
+				distance = (int)(sample[0]*10);				
+				try {Thread.sleep(50);} catch (InterruptedException e) {e.printStackTrace();}				
 			}
-			else try {Thread.sleep(100);} catch (InterruptedException e) {e.printStackTrace();}
+			else try {Thread.sleep(50);} catch (InterruptedException e) {e.printStackTrace();}
 		}
 	}
 }
