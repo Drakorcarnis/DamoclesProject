@@ -2,38 +2,19 @@ import lejos.robotics.geometry.Rectangle2D;
 import lejos.hardware.device.NXTCam;
 import lejos.hardware.port.SensorPort;
 
-public class Cameras implements Runnable{
+class Camera extends Device{
 	private NXTCam cameraSensor;
-	private boolean mustPause;
-	private boolean mustStop;
-	public Rectangle2D target;
-	public boolean targetIsInView;
-	private Thread thread;
+	Rectangle2D target;
+	boolean targetIsInView;
 	
-	public Cameras(){
+	
+	Camera(){
 		targetIsInView=false;
 		cameraSensor = new NXTCam(SensorPort.S2);
 		cameraSensor.enableTracking(true);
 		cameraSensor.setTrackingMode(NXTCam.OBJECT_TRACKING);
-		thread = new Thread(this);
+		
 	}
-	
-
-	public void stopThread(){
-		mustPause = true;
-		mustStop = true;
-	}
-	
-	public void pauseThread(){
-		mustPause = true;
-	}
-	
-	public void startThread(){ 
-		mustStop = false;
-		mustPause = false;
-		if (!thread.isAlive()) thread.start();
-	}
-	
 	public void run(){
 		while(!mustStop){
 			if(!mustPause){
