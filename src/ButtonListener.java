@@ -14,7 +14,6 @@ public class ButtonListener {
 		this.button.addKeyListener(new KeyListener() {
 		      public void keyPressed(Key k) {isPressed = !isPressed;}
 		      public void keyReleased(Key k) {}
-
 		});  
 	}
 }

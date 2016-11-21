@@ -1,22 +1,20 @@
 public class Robot {
 	static ButtonListener enterListening;
 	static ButtonListener escapeListening;
-	static Device motorA;
-	static Device motorB;
-	static Device distance;
-	static Device camera;
-	static Device scheduler;
+	static TurretMotor motorA;
+	static TurretMotor motorB;
+	static DistanceSensor distance;
+	static Scheduler scheduler;
+	static Camera camera;
 
 	public static void main(String[] args){
 		enterListening= new ButtonListener("ENTER");
 		enterListening.isPressed = true;
 		escapeListening= new ButtonListener("ESCAPE");
-		motorA= new TurretMotor('A', 120, 80);
-		motorB= new TurretMotor('B', 60, 80);
 		distance = new DistanceSensor();
 		camera = new Camera();
+		motorA= new TurretMotor('A', 120, 80);
+		motorB= new TurretMotor('B', 60, 80);
 		scheduler = new Scheduler();
-		scheduler.startThread();
 	}
-	
 }
