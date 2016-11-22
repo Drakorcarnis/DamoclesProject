@@ -9,6 +9,8 @@ class Camera{
 		cameraSensor.enableTracking(true);
 		cameraSensor.setTrackingMode(NXTCam.OBJECT_TRACKING);
 	}
-	boolean isDetected(){return cameraSensor.getNumberOfObjects()!=0;}
-	Rectangle2D getRectangle(){return cameraSensor.getRectangle(0);}
+	Rectangle2D getRectangle(){
+		if(cameraSensor.getNumberOfObjects()!=0)return cameraSensor.getRectangle(0);
+		return null;
+	}
 }

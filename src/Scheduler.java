@@ -9,8 +9,9 @@ public class Scheduler implements Runnable {
 	public void run(){
 		boolean oldvalue=false;
 		boolean mustStop=false;
+		boolean enterIsPressed;
 		while(!mustStop){
-			boolean enterIsPressed=Robot.enterListening.isPressed;
+			enterIsPressed=Robot.enterListening.isPressed;
 			if(Robot.escapeListening.isPressed){
 				Robot.motorA.mustStop=true;
 				Robot.motorB.mustStop=true;

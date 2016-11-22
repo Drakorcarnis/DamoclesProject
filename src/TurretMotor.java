@@ -1,6 +1,7 @@
 
 import lejos.hardware.motor.Motor;
 import lejos.hardware.motor.NXTRegulatedMotor;
+import lejos.robotics.geometry.Rectangle2D;
 
 public class TurretMotor implements Runnable{
 	private int target;
@@ -8,6 +9,7 @@ public class TurretMotor implements Runnable{
 	private int range;
 	public NXTRegulatedMotor motor;
 	private char motorPort;
+	Rectangle2D rectangle;
 	double value;
 	boolean targetFlag;
 	Thread thread;
@@ -23,16 +25,16 @@ public class TurretMotor implements Runnable{
 		thread = new Thread(this);
 	}
 	int computeTarget(){
-		if (Robot.camera.isDetected()){
+		if ((rectangle=Robot.camera.getRectangle())!=null){
 			if(targetFlag)oldTarget = target;
 			targetFlag = false;
 			if(motorPort=='A'){
-				if((value=Robot.camera.getRectangle().getX())>55)return target=motor.getTachoCount() + (int)(value)-50;
+				if((value=rectangle.getX())>55)return target=motor.getTachoCount() + (int)(value)-50;
 				else if(value<45)return target=(motor.getTachoCount()-50+(int)(value));
 				else return target=motor.getTachoCount();
 			}	
 			else if(motorPort=='B'){
-				if((value=Robot.camera.getRectangle().getY())>55)return target=motor.getTachoCount() + (int)(value)-50;
+				if((value=rectangle.getY())>55)return target=motor.getTachoCount() + (int)(value)-50;
 				else if(value<45)return target=motor.getTachoCount()-50+(int)(value);
 				else return target=motor.getTachoCount();
 			}

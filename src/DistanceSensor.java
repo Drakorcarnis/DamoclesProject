@@ -12,7 +12,6 @@ public class DistanceSensor{
 		distanceSensor.powerOn();
 		distanceMode = distanceSensor.getDistanceMode();
 		sample=new float[1];
-		distanceMode.fetchSample(sample,0);
 	}
 	 int getDistance(){
 		distanceMode.fetchSample(sample,0);
