@@ -1,5 +1,6 @@
 import lejos.robotics.geometry.Rectangle2D;
 import lejos.hardware.device.NXTCam;
+import lejos.hardware.lcd.LCD;
 import lejos.hardware.port.SensorPort;
 
 class Camera{
@@ -10,7 +11,8 @@ class Camera{
 		cameraSensor.setTrackingMode(NXTCam.OBJECT_TRACKING);
 	}
 	Rectangle2D getRectangle(){
-		if(cameraSensor.getNumberOfObjects()!=0)return cameraSensor.getRectangle(0);
+		LCD.drawString(Boolean.toString(cameraSensor.getNumberOfObjects()!=0),0 , 1);
+		if(cameraSensor.getNumberOfObjects()!=0)return cameraSensor.getRectangle(0);		
 		return null;
 	}
 }

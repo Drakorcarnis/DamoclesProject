@@ -33,7 +33,7 @@ public class Scheduler implements Runnable {
 			}
 			if(enterIsPressed){
 				LCD.drawInt(Robot.distance.getDistance(), 0, 0);
-				Sound.playTone(6000 - Robot.distance.getDistance()*30, 10);
+//				Sound.playTone(6000 - Robot.distance.getDistance()*30, 10);
 			}
 			try {Thread.sleep(100);} catch (InterruptedException e) {e.printStackTrace();}
 		}

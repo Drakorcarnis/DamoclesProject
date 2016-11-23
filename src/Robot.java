@@ -13,8 +13,8 @@ public class Robot {
 		escapeListening= new ButtonListener("ESCAPE");
 		distance = new DistanceSensor();
 		camera = new Camera();
-		motorA= new TurretMotor('A', 120, 80);
-		motorB= new TurretMotor('B', 60, 80);
+		motorA= new TurretMotor('A',0, 3000, 1000);
+		motorB= new TurretMotor('B',-20, 20, 60);
 		scheduler = new Scheduler();
 	}
 }
