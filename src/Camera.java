@@ -11,7 +11,6 @@ class Camera{
 		cameraSensor.setTrackingMode(NXTCam.OBJECT_TRACKING);
 	}
 	Rectangle2D getRectangle(){
-		LCD.drawString(Boolean.toString(cameraSensor.getNumberOfObjects()!=0),0 , 1);
 		if(cameraSensor.getNumberOfObjects()!=0)return cameraSensor.getRectangle(0);		
 		return null;
 	}
