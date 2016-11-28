@@ -34,14 +34,14 @@ public class TurretMotor implements Runnable{
 			targetFlag = false;
 			if(motorPort=='A'){
 				value=rectangle.getX();
-				if(value<70)return"forward";
-				else if(value>80)return"backward";
+				if(value<68)return"forward";
+				else if(value>82)return"backward";
 				else return"stop";
 			}
 			else if(motorPort=='B'){
 				value=rectangle.getY();
-				if(value<40)return"forward";
-				else if(value>50)return"backward";
+				if(value<42)return"backward";
+				else if(value>49)return"baforwardckward";
 				else return"stop";
 			}
 		}

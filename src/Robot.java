@@ -15,8 +15,8 @@ public class Robot {
 		rightListening= new ButtonListener("RIGHT");
 		distance = new DistanceSensor();
 		camera = new Camera();
-		motorA= new TurretMotor('A',0, 3000, 1000, 2000);
-		motorB= new TurretMotor('B',-20, 20, 50, 1000);
+		motorA= new TurretMotor('A',-1500, 1500, 1000, 2000);
+		motorB= new TurretMotor('B',-30, 40, 60, 2000);
 		scheduler = new Scheduler();
 	}
 }
