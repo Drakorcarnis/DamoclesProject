@@ -17,7 +17,7 @@ public class Scheduler implements Runnable {
 				Robot.motorB.mustStop=true;
 				mustStop=true;
 			}
-			else if(enterIsPressed  != oldvalue & !enterIsPressed){
+			else if(enterIsPressed  != oldvalue & enterIsPressed==false){
 				oldvalue = false;
 				Robot.motorA.mustPause=true;
 				Robot.motorB.mustPause=true;

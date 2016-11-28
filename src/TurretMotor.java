@@ -12,11 +12,15 @@ public class TurretMotor implements Runnable{
 	public NXTRegulatedMotor motor;
 	private char motorPort;
 	Rectangle2D rectangle;
-	double value;
+	double x;
+	double y;
+	double width;
+	double height;
 	boolean targetFlag;
 	Thread thread;
 	boolean mustPause;
 	boolean mustStop;
+	
 	TurretMotor(char motorPort,int min, int range, int speed, int acceleration){
 		this.motorPort = motorPort;
 		if(motorPort=='A') motor = Motor.A;
@@ -30,18 +34,22 @@ public class TurretMotor implements Runnable{
 	}
 	String computeTarget(){
 		if ((rectangle=Robot.camera.getRectangle())!=null){
+			width = rectangle.getWidth();
+			height = rectangle.getHeight();
 			if(targetFlag)oldTarget = target;
 			targetFlag = false;
 			if(motorPort=='A'){
-				value=rectangle.getX();
-				if(value<68)return"forward";
-				else if(value>82)return"backward";
+				x=rectangle.getX();
+				LCD.drawString(Double.toString(x), 0, 1);
+				if((x+width/2)>85.0)return"backward";
+				else if((x+width/2)<75.0)return"forward";
 				else return"stop";
 			}
 			else if(motorPort=='B'){
-				value=rectangle.getY();
-				if(value<42)return"backward";
-				else if(value>49)return"baforwardckward";
+				y=rectangle.getY();
+				LCD.drawString(Double.toString(y), 0, 2);
+				if((y+width/2)>70.0)return"forward";
+				else if((y+width/2)<60.0)return"backward";
 				else return"stop";
 			}
 		}
