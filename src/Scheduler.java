@@ -2,11 +2,12 @@ import lejos.hardware.Sound;
 import lejos.hardware.lcd.LCD;
 
 public class Scheduler implements Runnable {
-	
+	//A manager to pause/start the pod.
 	public Scheduler() {
 		new Thread(this).start();
 	}
 	public void run(){
+		//Loop that get the state oh the buttons and toggle the actuators' state accordingly.
 		boolean oldvalue=false;
 		boolean mustStop=false;
 		boolean enterIsPressed;

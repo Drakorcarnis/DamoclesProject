@@ -5,6 +5,7 @@ import lejos.hardware.motor.NXTRegulatedMotor;
 import lejos.robotics.geometry.Rectangle2D;
 
 public class TurretMotors implements Runnable{
+	//Implements the management of the 2 motors of the turret.
 	private String targetA;
 	private String targetB;
 	private String oldTargetA;
@@ -32,18 +33,21 @@ public class TurretMotors implements Runnable{
 		thread = new Thread(this);
 	}
 	void setMotorA(int min, int range, int speed, int acceleration){
+		//Sets the parameters of the motor linked to motorPort A.
 		minA = min;
 		rangeA = range;
 		motorA.setSpeed(speed);
 		motorA.setAcceleration(acceleration);
 	}
 	void setMotorB(int min, int range, int speed, int acceleration){
+		//Sets the parameters of the motor linked to motorPort B.
 		minB = min;
 		rangeB = range;
 		motorB.setSpeed(speed);
 		motorB.setAcceleration(acceleration);
 	}
 	void computeTarget(){
+		//Computes the target of the two motors, depending if the pod is in mode research or locked.
 		if ((rectangle=Robot.camera.getRectangle())!=null){
 			width = rectangle.getWidth();
 			height = rectangle.getHeight();
@@ -76,22 +80,24 @@ public class TurretMotors implements Runnable{
 			else if (motorB.getTachoCount()>=rangeB)targetB="backward";
 		}
 	}
-	public void run(){			
-			while(!mustStop){
-				computeTarget();
-				if(!mustPause){
-					if(targetA=="forward")motorA.forward();
-					else if(targetA=="backward")motorA.backward();
-					else motorA.stop();
-					if(targetB=="forward")motorB.forward();
-					else if(targetB=="backward")motorB.backward();
-					else motorB.stop();
-				}
-				else{
-					motorA.flt(true);
-					motorB.flt(true);
-				}
-				
+	public void run(){	
+		//Loop that computes the target of the turret motors and give the move command to them
+		while(!mustStop){
+			computeTarget();
+			if(!mustPause){
+				if(targetA=="forward")motorA.forward();
+				else if(targetA=="backward")motorA.backward();
+				else motorA.stop();
+				if(targetB=="forward")motorB.forward();
+				else if(targetB=="backward")motorB.backward();
+				else motorB.stop();
 			}
+			else{
+				//Stop motors
+				motorA.flt(true);
+				motorB.flt(true);
+			}
+			
+		}
 	}
 }

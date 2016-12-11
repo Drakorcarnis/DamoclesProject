@@ -2,6 +2,7 @@ import lejos.hardware.motor.NXTRegulatedMotor;
 import lejos.hardware.motor.Motor;
 
 public class ChariotMotors implements Runnable{
+	//Implements the management of the 2 motors of the chariot.
 	public NXTRegulatedMotor motorC;
 	public NXTRegulatedMotor motorD;
 	ChariotMotors(){

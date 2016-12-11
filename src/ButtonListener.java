@@ -3,6 +3,7 @@ import lejos.hardware.Key;
 import lejos.hardware.KeyListener;
 
 public class ButtonListener {
+//	Allows to listen to Button events
 	public boolean isPressed;
 	public ButtonListener(String button){
 		isPressed = false;
