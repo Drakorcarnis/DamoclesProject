@@ -3,6 +3,7 @@ public class Robot {
 	static ButtonListener escapeListening;
 	static ButtonListener rightListening;
 	static TurretMotors turretMotors;
+	static ChariotMotors chariotMotors;
 	static DistanceSensor distance;
 	static Scheduler scheduler;
 	static Camera camera;
@@ -17,6 +18,7 @@ public class Robot {
 		turretMotors = new TurretMotors();
 		turretMotors.setMotorA(-1500, 1500, 1000, 2000);
 		turretMotors.setMotorB(-300, 300, 500, 2000);
+		chariotMotors = new ChariotMotors();
 		scheduler = new Scheduler();
 	}
 }
